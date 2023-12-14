@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.*;
 import utils.Constants;
 import utils.FrameworkProperties;
+import utils.Utils;
 
 import java.time.Duration;
 
@@ -39,6 +40,7 @@ public class Tests{
         checkOutYourInformationPage = new CheckOutYourInformationPage();
         checkOutCompletePage = new CheckOutCompletePage();
     }
+
     @Test
     public void testingAutentication(){
         driver.get(Constants.URL);
@@ -93,6 +95,7 @@ public class Tests{
         assertTrue("Did not go back to the home page", driver.findElement(By.cssSelector("#header_container > div.header_secondary_container > span")).isDisplayed());
     }
 
+    @AfterClass
     public static void closeObjects(){
         driver.close();
     }

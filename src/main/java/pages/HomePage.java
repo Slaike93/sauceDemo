@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.Constants;
+import utils.Utils;
 
 import java.time.Duration;
 import java.util.List;
@@ -43,6 +44,7 @@ public class HomePage {
             System.out.println("Updated cart");
         } else {
             System.out.println("Cart not updated");
+            Utils.takeScreenshot();
         }
     }
 

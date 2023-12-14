@@ -1,5 +1,7 @@
 package utils;
 
+import java.io.File;
+
 public class Constants {
     public static final String PROPERTIES_FILE_NAME = "framework.properties";
     public static final String FILE_NOT_FOUND_EXCEPTION_MESSAGE = "File not found";
@@ -25,5 +27,7 @@ public class Constants {
     public static final String LOCKED_OUT_MESSAGE = "locked_out_message";
     public static final String WRONG_CREDENTIAL = "wrong_credential";
     public static final String WRONG_CREDENTIAL_MESSAGE = "wrongCredential_message";
-
+    public static final String SCREENSHOTS_FOLDER = "screenshots\\";
+    public static final int SCREENSHOT_NAME_LENGTH = 4;
+    public static final String SCREENSHOT_EXTENSION = ".png";
 }

@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.Constants;
+import utils.Utils;
 
 import java.time.Duration;
 
@@ -34,10 +35,9 @@ public class CheckOutYourInformationPage {
         insertFirstName.sendKeys(Constants.FIRST_NAME_CHECKOUT);
         insertLastName.sendKeys(Constants.LAST_NAME_CHECKOUT);
         insertCAP.sendKeys(Constants.CAP_CHECKOUT);
-
+        Utils.takeScreenshot();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.TIMEOUT));
         wait.until(ExpectedConditions.elementToBeClickable(toCheckout));
-
         toCheckout.click();
     }
 }
