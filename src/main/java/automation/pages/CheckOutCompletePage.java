@@ -1,30 +1,30 @@
-package pages;
+package automation.pages;
 
-import drivers.DriverSingleton;
+import automation.drivers.DriverSingleton;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import utils.Constants;
+import automation.utils.Constants;
 
 import java.time.Duration;
 
-public class CheckOutOverviewPage {
+public class CheckOutCompletePage {
     private WebDriver driver;
-    public CheckOutOverviewPage() {
+    public CheckOutCompletePage() {
         driver = DriverSingleton.getDriver();
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy (id = "finish")
-    private WebElement finishCheckOutButton;
+    @FindBy(id = "back-to-products")
+    private WebElement backHomePageButton;
 
-    public void completeCheckOut() {
+    public void returnHomePage() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.TIMEOUT));
-        wait.until(ExpectedConditions.elementToBeClickable(finishCheckOutButton));
+        wait.until(ExpectedConditions.elementToBeClickable(backHomePageButton));
 
-        finishCheckOutButton.click();
+        backHomePageButton.click();
     }
 }

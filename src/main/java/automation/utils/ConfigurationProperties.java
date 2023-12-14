@@ -1,44 +1,56 @@
-package utils;
+package automation.utils;
 
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
 //Sostituisce FrameworkProperties per il BDD
 @Component
 @PropertySource("framework.properties")
 public class ConfigurationProperties {
-    @value("$(browser)")
+    @Value("${browser}")
     private String browser;
 
-    @value("$(standard_user)")
+    @Value("${standard_user}")
     private String standard_user;
 
-    @value("$(locked_out_user)")
+    @Value("${locked_out_user}")
     private String locked_out_user;
 
-    @value("$(problem_user)")
+    @Value("${problem_user}")
     private String problem_user;
 
-    @value("$(performance_glitch_user)")
+    @Value("${performance_glitch_user}")
     private String performance_glitch_user;
 
-    @value("$(error_user)")
+    @Value("${error_user}")
     private String error_user;
 
-    @value("$(visual_user)")
+    @Value("${visual_user}")
     private String visual_user;
 
-    @value("$(wrong_credential)")
+    @Value("${wrong_credential}")
     private String wrong_credential;
 
-    @value("$(locked_out_message)")
+    @Value("${locked_out_message}")
     private String locked_out_message;
 
-    @value("$(wrongCredential_message)")
+    @Value("${wrongCredential_message}")
     private String wrongCredential_message;
 
-    @value("$(password)")
+    @Value("${home_page_title}")
+    private String home_page_title;
+
+    @Value("${password}")
     private String password;
+
+    public String getHome_page_title() {
+        return home_page_title;
+    }
+
+    public void setHome_page_title(String home_page_title) {
+        this.home_page_title = home_page_title;
+    }
 
     public String getBrowser() {
         return browser;

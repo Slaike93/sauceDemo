@@ -1,7 +1,7 @@
-package drivers;
+package automation.drivers;
 
-import drivers.strategies.DriverStategy;
-import drivers.strategies.DriverStrategyImplementer;
+import automation.drivers.strategies.DriverStategy;
+import automation.drivers.strategies.DriverStrategyImplementer;
 import org.openqa.selenium.WebDriver;
 
 import java.util.concurrent.TimeUnit;
