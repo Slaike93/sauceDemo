@@ -7,6 +7,7 @@ import automation.utils.ConfigurationProperties;
 import automation.utils.Constants;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import io.cucumber.spring.CucumberContextConfiguration;
 import automation.config.AutomationFrameworkConfiguration;
+import static org.junit.Assert.assertTrue;
 
 import static org.junit.Assert.assertEquals;
 
@@ -66,7 +68,7 @@ public class StepDefinition {
         loginInPage.logIn(configurationProperties.getWrong_credential(), configurationProperties.getPassword());
     }
 
-    @Then("I can log into the home page")
+    @Then("I am into the home page")
     public void I_can_log_into_the_home_page(){
         assertEquals(configurationProperties.getHome_page_title(), homePage.getTitle());
     }
@@ -81,14 +83,52 @@ public class StepDefinition {
         assertEquals(configurationProperties.getWrongCredential_message(), loginInPage.getErrorMessage());
     }
 
-    //Aggiungere un prodotto al carrello
+    //Test add a product to the cart
     @When("I add a product to the cart")
     public void I_add_a_product_to_the_cart(){
         homePage.addToCart();
     }
 
-    @Then("the product should be added to the cart")
-    public void the_product_should_be_added to_the_cart(){
-
+    @Then("The product should be added to the cart")
+    public void The_product_should_be_added_to_the_cart(){
+        int itemCount = homePage.getCartItemCount();
+        assertTrue("No items added to the cart", itemCount>0);
     }
+
+    @And("Remove the cart item")
+    public void Remove_the_cart_item(){
+        homePage.removeItem();
+    }
+
+    @When("I am in the cart page")
+    public void I_am_in_the_cart_page(){
+        homePage.proceedToCheckOut();
+    }
+
+    @And("Click the checkout button and go to the checkout information page")
+    public void Click_the_checkout_button_and_go_to_the_checkout_information_page(){
+        cartPage.proceedToCheckOut();
+    }
+
+    @Then("Enter the personal info and go to the checkout overview page")
+    public void Enter_the_personal_info_and_go_to_the_checkout_overview_page(){
+        checkOutYourInformationPage.InsertYourInformation();
+    }
+
+    @Then("I am in the Checkout overview page and send the order")
+    public void I_am_in_the_Checkout_overview_page_and_send_the_order(){
+        checkOutOverviewPage.completeCheckOut();
+    }
+
+    @Then("I am in the Checkout complete page and click the back home button")
+    public void I_am_in_the_Checkout_complete_page_and_click_the_back_home_button(){
+        checkOutCompletePage.returnHomePage();
+    }
+
+    @And("The cart is empty")
+    public void The_cart_is_empty(){
+        int itemCount = homePage.getCartItemCount();
+        assertTrue("No items added to the cart", itemCount==0);
+    }
+
 }

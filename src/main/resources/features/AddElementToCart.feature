@@ -1,11 +1,11 @@
-Feature: Add element to cart
-  As a logged user, I want to add items to cart
+Feature: Add item to the cart
+  I want to add an item to the cart and then remove it
 
   Background:
     Given I go to the Website
-    When I specify my standard user credential and click Login
-    Then I can log into the home page
+    And I specify my standard user credential and click Login
 
-  Scenario: Adding an item to the shopping cart
+  Scenario: Test the add and remove cart functionality
     When I add a product to the cart
-    Then the product should be added to the cart
+    Then The product should be added to the cart
+    And Remove the cart item

@@ -34,6 +34,9 @@ public class HomePage {
     @FindBy(id = "shopping_cart_container")
     private WebElement cartButton;
 
+    @FindBy(id = "remove-sauce-labs-backpack")
+    private WebElement removeItem;
+
     public String getTitle() {
         return productsTitle.getText();
     }
@@ -59,6 +62,10 @@ public class HomePage {
                 return 0;
             }
         }
+    }
+
+    public void removeItem(){
+        removeItem.click();
     }
 
     public void proceedToCheckOut() {
