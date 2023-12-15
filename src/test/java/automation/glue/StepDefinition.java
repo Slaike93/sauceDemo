@@ -16,6 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import io.cucumber.spring.CucumberContextConfiguration;
 import automation.config.AutomationFrameworkConfiguration;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.junit.Assert.assertTrue;
 
 import static org.junit.Assert.assertEquals;
@@ -63,6 +68,7 @@ public class StepDefinition {
         loginInPage.logIn(configurationProperties.getLocked_out_user(), configurationProperties.getPassword());
     }
 
+    //Test with wrong credentials
     @When("I enter wrong credentials and click login")
     public void I_enter_wrong_credentials_and_click_login(){
         loginInPage.logIn(configurationProperties.getWrong_credential(), configurationProperties.getPassword());
@@ -83,6 +89,8 @@ public class StepDefinition {
         assertEquals(configurationProperties.getWrongCredential_message(), loginInPage.getErrorMessage());
     }
 
+    /*------------------------------------------------------*/
+
     //Test add a product to the cart
     @When("I add a product to the cart")
     public void I_add_a_product_to_the_cart(){
@@ -100,6 +108,9 @@ public class StepDefinition {
         homePage.removeItem();
     }
 
+    /*------------------------------------------------------*/
+
+    //Test checkout
     @When("I am in the cart page")
     public void I_am_in_the_cart_page(){
         homePage.proceedToCheckOut();
@@ -129,6 +140,45 @@ public class StepDefinition {
     public void The_cart_is_empty(){
         int itemCount = homePage.getCartItemCount();
         assertTrue("No items added to the cart", itemCount==0);
+    }
+
+    /*------------------------------------------------------*/
+
+    @When("I select the name ascending order sorting")
+    public void I_select_the_name_ascending_order_sorting(){
+        homePage.productAscendingSorting();
+    }
+
+    @Then("I see the products in name ascending order")
+    public void I_see_the_products_in_name_ascending_order(){
+        List<String> originalProductNames = homePage.createListProducts();
+        List<String> sortedProductNames = homePage.productAscendingSorting();
+
+        assertEquals("I prodotti non sono ordinati in ordine ascendente come previsto",
+                originalProductNames.stream().sorted().collect(Collectors.toList()),
+                sortedProductNames);
+    }
+
+
+    @When("I select the name descending order sorting")
+    public void I_select_the_name_descending_order_sorting(){
+        homePage.productDescendingSorting();
+    }
+
+    @Then("I see the products in name descending order sorting")
+    public void I_see_the_products_in_name_descending_order_sorting(){
+        List<String> originalProductNames = homePage.createListProducts();
+        List<String> sortedProductNames = homePage.productDescendingSorting();
+
+        assertEquals("I prodotti non sono ordinati in ordine discendente come previsto",
+                originalProductNames.stream().sorted(Collections.reverseOrder()).collect(Collectors.toList()),
+                sortedProductNames);
+    }
+
+    //Chiudi l'istanza dopo ogni test
+    @After
+    public void closeInstance(){
+        DriverSingleton.closeObjectInstance();
     }
 
 }

@@ -1,4 +1,4 @@
-Feature: Add item to the cart
+Feature: Add item to the cart and then remove it
   I want to add an item to the cart and then remove it
 
   Background:
