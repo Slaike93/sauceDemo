@@ -54,7 +54,13 @@ public class HomePage {
         }
     }
 
+    public void selectSortingType(String orderType){
+        WebElement sortingDropdown = driver.findElement(By.cssSelector("#header_container > div.header_secondary_container > div > span > select"));
+        new Select(sortingDropdown).selectByVisibleText(orderType);
+    }
+
     public List<String> createListProductsByName(){
+        //Crea una lista dei nomi dei prodotti
         List<String> originalProductNames = driver.findElements(By.cssSelector(".inventory_item_name"))
                 .stream()
                 .map(WebElement::getText)
@@ -64,10 +70,6 @@ public class HomePage {
     }
 
     public List<String> productAscendingSorting(){
-        WebElement sortingDropdown = driver.findElement(By.cssSelector("#header_container > div.header_secondary_container > div > span > select"));
-        Select dropdown = new Select(sortingDropdown);
-        dropdown.selectByVisibleText("Name (A to Z)");
-
         List<String> sortedProductNames = driver.findElements(By.cssSelector(".inventory_item_name"))
                 .stream()
                 .map(WebElement::getText)
@@ -77,10 +79,6 @@ public class HomePage {
     }
 
     public List<String> productDescendingSorting(){
-        WebElement sortingDropdown = driver.findElement(By.cssSelector("#header_container > div.header_secondary_container > div > span > select"));
-        Select dropdown = new Select(sortingDropdown);
-        dropdown.selectByVisibleText("Name (Z to A)");
-
         List<String> sortedProductNames = driver.findElements(By.cssSelector(".inventory_item_name"))
                 .stream()
                 .map(WebElement::getText)
@@ -88,7 +86,6 @@ public class HomePage {
 
         return sortedProductNames;
     }
-//----------------------------------------------------------------------
 
     public List<Double> createListProductsByPrice(){
         return driver.findElements(By.cssSelector(".inventory_item_price"))
@@ -97,15 +94,6 @@ public class HomePage {
                 .map(Double::parseDouble)
                 .collect(Collectors.toList());
     }
-
-    public void selectSortingType(String orderType){
-        WebElement sortingDropdown = driver.findElement(By.cssSelector("#header_container > div.header_secondary_container > div > span > select"));
-        new Select(sortingDropdown).selectByVisibleText(orderType);
-    }
-
-
-
-//----------------------------------------------------------------------
 
     public int getCartItemCount(){
         List<WebElement> cartItems = driver.findElements(By.cssSelector("#shopping_cart_container > a"));

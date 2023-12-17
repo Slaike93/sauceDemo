@@ -37,6 +37,10 @@ public class StepDefinition {
     private CheckOutOverviewPage checkOutOverviewPage;
     private CheckOutCompletePage checkOutCompletePage;
 
+    //Liste di supporto per il test del sorting
+    private List<Double> originalPrices;
+    private List<String> originalNames;
+
     @Autowired
     ConfigurationProperties configurationProperties;
 
@@ -90,8 +94,6 @@ public class StepDefinition {
         assertEquals(configurationProperties.getWrongCredential_message(), loginInPage.getErrorMessage());
     }
 
-    /*------------------------------------------------------*/
-
     //Test add a product to the cart
     @When("I add a product to the cart")
     public void I_add_a_product_to_the_cart(){
@@ -108,8 +110,6 @@ public class StepDefinition {
     public void Remove_the_cart_item(){
         homePage.removeItem();
     }
-
-    /*------------------------------------------------------*/
 
     //Test checkout
     @When("I am in the cart page")
@@ -143,81 +143,81 @@ public class StepDefinition {
         assertTrue("No items added to the cart", itemCount==0);
     }
 
-    /*------------------------------------------------------*/
-
     //Test ordinamento prodotti A-Z
     @When("I select ascending sorting by name")
     public void I_select_ascending_sorting_by_name(){
-        homePage.productAscendingSorting();
+        List<String> originalNames = homePage.createListProductsByName();
+        this.originalNames = originalNames;
+        homePage.selectSortingType("Name (A to Z)");
     }
 
     @Then("I see the products sorted by name in ascending order")
     public void I_see_the_products_sorted_by_name_in_ascending_order(){
-        List<String> originalProductNames = homePage.createListProductsByName();
         List<String> sortedProductNames = homePage.productAscendingSorting();
 
-        assertEquals("Products are not sorted correctly",
-                originalProductNames.stream().sorted().collect(Collectors.toList()),
+        assertEquals("Products are not sorted in ascending order by name",
+                this.originalNames.stream().sorted().collect(Collectors.toList()),
                 sortedProductNames);
     }
 
     //Test ordinamento prodotti Z-A
     @When("I select descending sorting by name")
     public void I_select_descending_sorting_by_name(){
-        homePage.productDescendingSorting();
+        List<String> originalNames = homePage.createListProductsByName();
+        this.originalNames = originalNames;
+        homePage.selectSortingType("Name (Z to A)");
     }
 
     @Then("I see the products sorted by name in descending order")
     public void I_see_the_products_sorted_by_name_in_descending_order(){
-        List<String> originalProductNames = homePage.createListProductsByName();
         List<String> sortedProductNames = homePage.productDescendingSorting();
 
-        assertEquals("Products are not sorted correctly",
-                originalProductNames.stream().sorted(Collections.reverseOrder()).collect(Collectors.toList()),
+        assertEquals("Products are not sorted in descending order by name",
+                this.originalNames.stream().sorted(Collections.reverseOrder()).collect(Collectors.toList()),
                 sortedProductNames);
     }
-
-    //----------------------------------------------------------------------------
 
     //Test ordinamento prodotti per prezzo low-high
     @When("I select ascending sorting by price")
     public void I_select_ascending_sorting_by_price() {
+        List<Double> originalPrices = homePage.createListProductsByPrice();
         homePage.selectSortingType("Price (low to high)");
+        this.originalPrices = originalPrices;
     }
 
     @Then("I see the products sorted by price in ascending order")
     public void I_see_the_products_sorted_by_price_in_ascending_order() {
-        List<Double> originalPrices = homePage.createListProductsByPrice();
-        List<Double> expectedPrices = new ArrayList<>(originalPrices);
+        List<Double> expectedPrices = new ArrayList<>(this.originalPrices);
         Collections.sort(expectedPrices);
 
         List<Double> sortedPrices = homePage.createListProductsByPrice();
-        assertEquals("Prices not sorted", expectedPrices, sortedPrices);
+        assertEquals("Prices not sorted in ascending order",
+                expectedPrices, sortedPrices);
     }
-    //----------------------------------------------------------------------------
 
     //Test ordinamento prodotti per prezzo high-low
     @When("I select descending sorting by price")
     public void I_select_descending_sorting_by_price(){
+        List<Double> originalPrices = homePage.createListProductsByPrice();
+        this.originalPrices = originalPrices;
         homePage.selectSortingType("Price (high to low)");
     }
 
     @Then("I see the products sorted by price in descending order")
     public void I_see_the_products_sorted_by_price_in_descending_order(){
-        List<Double> originalPrices = homePage.createListProductsByPrice();
-        List<Double> expectedPrices = new ArrayList<>(originalPrices);
+        List<Double> expectedPrices = new ArrayList<>(this.originalPrices);
         Collections.sort(expectedPrices, Collections.reverseOrder());
 
         List<Double> sortedPrices = homePage.createListProductsByPrice();
-        assertEquals("Prices not sorted", expectedPrices, sortedPrices);
+        assertEquals("Prices not sorted in descending order",
+                expectedPrices, sortedPrices);
     }
+
 
     //Chiudi l'istanza dopo ogni test
     @After
     public void closeInstance(){
         DriverSingleton.closeObjectInstance();
     }
-
-
 
 }
