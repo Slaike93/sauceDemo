@@ -151,7 +151,7 @@ public class StepDefinition {
 
     @Then("I see the products in name ascending order")
     public void I_see_the_products_in_name_ascending_order(){
-        List<String> originalProductNames = homePage.createListProducts();
+        List<String> originalProductNames = homePage.createListProductsByName();
         List<String> sortedProductNames = homePage.productAscendingSorting();
 
         assertEquals("I prodotti non sono ordinati in ordine ascendente come previsto",
@@ -165,9 +165,9 @@ public class StepDefinition {
         homePage.productDescendingSorting();
     }
 
-    @Then("I see the products in name descending order sorting")
-    public void I_see_the_products_in_name_descending_order_sorting(){
-        List<String> originalProductNames = homePage.createListProducts();
+    @Then("I see the products in name descending order")
+    public void I_see_the_products_in_name_descending_order(){
+        List<String> originalProductNames = homePage.createListProductsByName();
         List<String> sortedProductNames = homePage.productDescendingSorting();
 
         assertEquals("I prodotti non sono ordinati in ordine discendente come previsto",

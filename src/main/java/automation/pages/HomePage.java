@@ -54,8 +54,8 @@ public class HomePage {
         }
     }
 
-    public List<String> createListProducts(){
-        List<String> originalProductNames = driver.findElements(By.cssSelector("#item_4_title_link > div"))
+    public List<String> createListProductsByName(){
+        List<String> originalProductNames = driver.findElements(By.cssSelector(".inventory_item_name"))
                 .stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
@@ -68,7 +68,7 @@ public class HomePage {
         Select dropdown = new Select(sortingDropdown);
         dropdown.selectByVisibleText("Name (A to Z)");
 
-        List<String> sortedProductNames = driver.findElements(By.cssSelector("#item_4_title_link > div"))
+        List<String> sortedProductNames = driver.findElements(By.cssSelector(".inventory_item_name"))
                 .stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
@@ -81,7 +81,7 @@ public class HomePage {
         Select dropdown = new Select(sortingDropdown);
         dropdown.selectByVisibleText("Name (Z to A)");
 
-        List<String> sortedProductNames = driver.findElements(By.cssSelector("#item_4_title_link > div"))
+        List<String> sortedProductNames = driver.findElements(By.cssSelector(".inventory_item_name"))
                 .stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
