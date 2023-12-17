@@ -88,6 +88,24 @@ public class HomePage {
 
         return sortedProductNames;
     }
+//----------------------------------------------------------------------
+
+    public List<Double> createListProductsByPrice(){
+        return driver.findElements(By.cssSelector(".inventory_item_price"))
+                .stream()
+                .map(element -> element.getText().replace("$", "").trim())
+                .map(Double::parseDouble)
+                .collect(Collectors.toList());
+    }
+
+    public void selectSortingType(String orderType){
+        WebElement sortingDropdown = driver.findElement(By.cssSelector("#header_container > div.header_secondary_container > div > span > select"));
+        new Select(sortingDropdown).selectByVisibleText(orderType);
+    }
+
+
+
+//----------------------------------------------------------------------
 
     public int getCartItemCount(){
         List<WebElement> cartItems = driver.findElements(By.cssSelector("#shopping_cart_container > a"));
@@ -105,26 +123,6 @@ public class HomePage {
 
     public void removeItem(){
         removeItem.click();
-    }
-
-    public void sortProductByNameAscending(){
-        Select sortMenu = new Select(sortingMenu);
-        sortMenu.selectByVisibleText("Name (A to Z)");
-    }
-
-    public void sortProductByNameDescending(){
-        Select sortMenu = new Select(sortingMenu);
-        sortMenu.selectByVisibleText("Name (Z to A)");
-    }
-
-    public void sortProductByPriceAscending(){
-        Select sortMenu = new Select(sortingMenu);
-        sortMenu.selectByVisibleText("Price (low to high)");
-    }
-
-    public void sortProductByPriceDescending(){
-        Select sortMenu = new Select(sortingMenu);
-        sortMenu.selectByVisibleText("Price (high to low)");
     }
 
     public void proceedToCheckOut() {

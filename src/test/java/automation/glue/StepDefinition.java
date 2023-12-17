@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import io.cucumber.spring.CucumberContextConfiguration;
 import automation.config.AutomationFrameworkConfiguration;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -144,35 +145,71 @@ public class StepDefinition {
 
     /*------------------------------------------------------*/
 
-    @When("I select the name ascending order sorting")
-    public void I_select_the_name_ascending_order_sorting(){
+    //Test ordinamento prodotti A-Z
+    @When("I select ascending sorting by name")
+    public void I_select_ascending_sorting_by_name(){
         homePage.productAscendingSorting();
     }
 
-    @Then("I see the products in name ascending order")
-    public void I_see_the_products_in_name_ascending_order(){
+    @Then("I see the products sorted by name in ascending order")
+    public void I_see_the_products_sorted_by_name_in_ascending_order(){
         List<String> originalProductNames = homePage.createListProductsByName();
         List<String> sortedProductNames = homePage.productAscendingSorting();
 
-        assertEquals("I prodotti non sono ordinati in ordine ascendente come previsto",
+        assertEquals("Products are not sorted correctly",
                 originalProductNames.stream().sorted().collect(Collectors.toList()),
                 sortedProductNames);
     }
 
-
-    @When("I select the name descending order sorting")
-    public void I_select_the_name_descending_order_sorting(){
+    //Test ordinamento prodotti Z-A
+    @When("I select descending sorting by name")
+    public void I_select_descending_sorting_by_name(){
         homePage.productDescendingSorting();
     }
 
-    @Then("I see the products in name descending order")
-    public void I_see_the_products_in_name_descending_order(){
+    @Then("I see the products sorted by name in descending order")
+    public void I_see_the_products_sorted_by_name_in_descending_order(){
         List<String> originalProductNames = homePage.createListProductsByName();
         List<String> sortedProductNames = homePage.productDescendingSorting();
 
-        assertEquals("I prodotti non sono ordinati in ordine discendente come previsto",
+        assertEquals("Products are not sorted correctly",
                 originalProductNames.stream().sorted(Collections.reverseOrder()).collect(Collectors.toList()),
                 sortedProductNames);
+    }
+
+    //----------------------------------------------------------------------------
+
+    //Test ordinamento prodotti per prezzo low-high
+    @When("I select ascending sorting by price")
+    public void I_select_ascending_sorting_by_price() {
+        homePage.selectSortingType("Price (low to high)");
+    }
+
+    @Then("I see the products sorted by price in ascending order")
+    public void I_see_the_products_sorted_by_price_in_ascending_order() {
+        List<Double> originalPrices = homePage.createListProductsByPrice();
+        List<Double> expectedPrices = new ArrayList<>(originalPrices);
+        Collections.sort(expectedPrices);
+
+        List<Double> sortedPrices = homePage.createListProductsByPrice();
+        assertEquals("Prices not sorted", expectedPrices, sortedPrices);
+    }
+    //----------------------------------------------------------------------------
+
+    //Test ordinamento prodotti per prezzo high-low
+    @When("I select descending sorting by price")
+    public void I_select_descending_sorting_by_price(){
+        homePage.selectSortingType("Price (high to low)");
+    }
+
+    @Then("I see the products sorted by price in descending order")
+    public void I_see_the_products_sorted_by_price_in_descending_order(){
+        List<Double> originalPrices = homePage.createListProductsByPrice();
+        List<Double> expectedPrices = new ArrayList<>(originalPrices);
+        Collections.sort(expectedPrices, Collections.reverseOrder());
+
+        List<Double> sortedPrices = homePage.createListProductsByPrice();
+        assertEquals("Prices not sorted", expectedPrices, sortedPrices);
     }
 
     //Chiudi l'istanza dopo ogni test
@@ -180,5 +217,7 @@ public class StepDefinition {
     public void closeInstance(){
         DriverSingleton.closeObjectInstance();
     }
+
+
 
 }
