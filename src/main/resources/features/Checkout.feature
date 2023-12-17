@@ -2,7 +2,7 @@ Feature: Complete the order process
   I want to test a complete process to send an order
 
   Background:
-    Given I go to the Website
+    Given I am in the first page of the website
     And I specify my standard user credential and click Login
     And I am into the home page
     And I add a product to the cart

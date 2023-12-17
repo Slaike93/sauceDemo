@@ -2,7 +2,7 @@ Feature: Add item to the cart and then remove it
   I want to add an item to the cart and then remove it
 
   Background:
-    Given I go to the Website
+    Given I am in the first page of the website
     And I specify my standard user credential and click Login
 
   Scenario: Test the add and remove cart functionality

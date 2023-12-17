@@ -2,7 +2,7 @@ Feature: Shopping Automation
   As a user, I want to login to the website
 
   Background:
-    Given I go to the Website
+    Given I am in the first page of the website
 
   Scenario: Testing the standard user authentication
     When I specify my standard user credential and click Login

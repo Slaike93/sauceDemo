@@ -5,6 +5,11 @@ import automation.drivers.DriverSingleton;
 import automation.pages.*;
 import automation.utils.ConfigurationProperties;
 import automation.utils.Constants;
+import automation.utils.TestCases;
+import automation.utils.Utils;
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -37,6 +42,9 @@ public class StepDefinition {
     private CheckOutOverviewPage checkOutOverviewPage;
     private CheckOutCompletePage checkOutCompletePage;
 
+    ExtentTest test;
+    static ExtentReports report = new ExtentReports("report/TestReport.html");
+
     //Liste di supporto per il test del sorting
     private List<Double> originalPrices;
     private List<String> originalNames;
@@ -53,35 +61,48 @@ public class StepDefinition {
         checkOutYourInformationPage = new CheckOutYourInformationPage();
         checkOutOverviewPage = new CheckOutOverviewPage();
         checkOutCompletePage = new CheckOutCompletePage();
+//        TestCases[] tests = TestCases.values();
+//        test = report.startTest(tests[Utils.testCount].getTestName());
+//        Utils.testCount++;
+
     }
 
-    @Given("I go to the Website")
-    public void i_go_to_the_website(){
+    @Given("I am in the first page of the website")
+    public void I_am_in_the_first_page_of_the_website(){
         driver = DriverSingleton.getDriver();
         driver.get(Constants.URL);
+        //test.log(LogStatus.PASS, "Navigating to "+Constants.URL);
     }
 
     //Test login standard user
     @When("I specify my standard user credential and click Login")
     public void I_specify_my_standard_user_credential_and_click_login(){
         loginInPage.logIn(configurationProperties.getStandard_user(), configurationProperties.getPassword());
+        //test.log(LogStatus.PASS, "Specified standard user credential and clicked the sign in button");
     }
 
     //Test login locked out user
     @When("I specify my locked out user's credential and click Login")
     public void I_specify_my_locked_out_users_credential_and_click_Login(){
         loginInPage.logIn(configurationProperties.getLocked_out_user(), configurationProperties.getPassword());
+//        test.log(LogStatus.PASS, "Specified locked out user credential and clicked the sign in button");
     }
 
     //Test with wrong credentials
     @When("I enter wrong credentials and click login")
     public void I_enter_wrong_credentials_and_click_login(){
         loginInPage.logIn(configurationProperties.getWrong_credential(), configurationProperties.getPassword());
+//        test.log(LogStatus.PASS, "Specified wrong credentials and clicked the sign in button");
     }
 
     @Then("I am into the home page")
     public void I_can_log_into_the_home_page(){
+//        if(configurationProperties.getHome_page_title().equals(homePage.getTitle()))
+//            test.log(LogStatus.PASS, "Authentication complete with standard user credentials.");
+//        else
+//            test.log(LogStatus.FAIL, "Authentication with standard user failed");
         assertEquals(configurationProperties.getHome_page_title(), homePage.getTitle());
+
     }
 
     @Then("I see the locked out error message")
@@ -214,9 +235,12 @@ public class StepDefinition {
     }
 
 
+
     //Chiudi l'istanza dopo ogni test
     @After
     public void closeInstance(){
+        //report.endTest(test);
+        //report.flush();
         DriverSingleton.closeObjectInstance();
     }
 

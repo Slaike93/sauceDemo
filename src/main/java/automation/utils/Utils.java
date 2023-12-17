@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.Random;
 
 public class Utils {
+    public static int testCount = 0;
+
     //Crea lo screenshot
     public static boolean takeScreenshot(){
         File file = ((TakesScreenshot) DriverSingleton.getDriver()).getScreenshotAs(OutputType.FILE);

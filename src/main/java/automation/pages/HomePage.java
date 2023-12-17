@@ -15,7 +15,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HomePage {
+public class HomePage implements BurgerMenu{
 
     private WebDriver driver;
     public HomePage() {
@@ -40,6 +40,21 @@ public class HomePage {
 
     @FindBy(css = "#header_container > div.header_secondary_container > div > span > select")
     private WebElement sortingMenu;
+
+    @FindBy(id = "react-burger-menu-btn")
+    private WebElement burgerMenuButton;
+
+    @FindBy(id = "inventory_sidebar_link")
+    private WebElement allItemsLink;
+
+    @FindBy(id = "about_sidebar_link")
+    private WebElement aboutLink;
+
+    @FindBy(id = "logout_sidebar_link")
+    private WebElement logoutLink;
+
+    @FindBy(id = "reset_sidebar_link")
+    private WebElement resetLink;
 
     public String getTitle() {
         return productsTitle.getText();
@@ -118,4 +133,38 @@ public class HomePage {
         wait.until(ExpectedConditions.elementToBeClickable(cartButton));
         cartButton.click();
     }
+
+    @Override
+    public void viewBurgerMenu(){
+        burgerMenuButton.click();
+    }
+
+    @Override
+    public void clickAllItemsLink() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.TIMEOUT));
+        wait.until(ExpectedConditions.elementToBeClickable(cartButton));
+        allItemsLink.click();
+    }
+
+    @Override
+    public void clickAboutLink() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.TIMEOUT));
+        wait.until(ExpectedConditions.elementToBeClickable(cartButton));
+        aboutLink.click();
+    }
+
+    @Override
+    public void clickLogout() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.TIMEOUT));
+        wait.until(ExpectedConditions.elementToBeClickable(cartButton));
+        logoutLink.click();
+    }
+
+    @Override
+    public void resetAppState() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.TIMEOUT));
+        wait.until(ExpectedConditions.elementToBeClickable(cartButton));
+        resetLink.click();
+    }
+
 }

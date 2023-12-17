@@ -1,7 +1,7 @@
 Feature: Sort the products in the home page
 
   Background:
-    Given I go to the Website
+    Given I am in the first page of the website
     Then I specify my standard user credential and click Login
     Then I am into the home page
 
