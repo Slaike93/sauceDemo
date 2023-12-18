@@ -8,23 +8,23 @@ Feature: Testing the menu functionality from the home page
     And I click on the menu icon and see the options
 
   Scenario: Going back to the products page
-    When I click on "All Items" option
+    When I click on All Items option
     Then I am into the home page
 
-  Scenario: Navigate to the "About" page
-    When I click on "About" option
+  Scenario: Navigate to the About page
+    When I click on About option
     Then I am redirected to Sauce Labs page
 
   Scenario: Logout
-    When I click on "Logout" option
+    When I click on Logout option
     Then I am in the first page of the website
 
   Scenario: Reset the app state, cart and items
-    When I click on "Reset App State" option
+    Given I add a product to the cart
+    And The product should be added to the cart
+    When I click on Reset App State option
     Then The cart is empty
-    #Questo, oppure verificare con un nuovo metodo che tutti i pulsanti di
-    #aggiunta al carrello siano visibili e cliccabili
-    And I add a product to the cart
+    And Every product should show "Add to Cart"
 
 
 

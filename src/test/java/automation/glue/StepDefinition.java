@@ -16,7 +16,9 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import io.cucumber.spring.CucumberContextConfiguration;
@@ -234,7 +236,51 @@ public class StepDefinition {
                 expectedPrices, sortedPrices);
     }
 
+//---------------------------------------------------------------------
 
+    //Inizio test menu da home page
+    //All items
+    @And("I click on the menu icon and see the options")
+    public void I_click_on_the_menu_icon_and_see_the_options(){
+        homePage.viewBurgerMenu();
+    }
+
+    @When("I click on All Items option")
+    public void I_click_on_All_Items_option() {
+        homePage.clickAllItemsLink();
+    }
+
+    @When("I click on About option")
+    public void I_click_on_About_option(){
+        homePage.clickAboutLink();
+    }
+
+    @Then("I am redirected to Sauce Labs page")
+    public void I_am_redirected_to_Sauce_Labs_page(){
+        for(String winHandle : driver.getWindowHandles()){
+            driver.switchTo().window(winHandle);
+        }
+        assertEquals("https://saucelabs.com/", driver.getCurrentUrl());
+    }
+
+    @When("I click on Logout option")
+    public void I_click_on_Logout_option(){
+        homePage.clickLogout();
+    }
+
+    @When("I click on Reset App State option")
+    public void I_click_on_Reset_App_State_option(){
+        homePage.resetAppState();
+    }
+
+    @Then("Every product should show {string}")
+    public void Every_product_should_show(String expectedButtonText){
+        List<WebElement> addButton = driver.findElements(By.className(".btn btn_primary btn_small btn_inventory"));
+        for(WebElement button : addButton){
+            assertEquals("The items are not resetted",expectedButtonText, button.getText());
+        }
+    }
+//---------------------------------------------------------------------
 
     //Chiudi l'istanza dopo ogni test
     @After
@@ -243,5 +289,6 @@ public class StepDefinition {
         //report.flush();
         DriverSingleton.closeObjectInstance();
     }
+
 
 }

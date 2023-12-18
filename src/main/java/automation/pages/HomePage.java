@@ -1,6 +1,7 @@
 package automation.pages;
 
 import automation.drivers.DriverSingleton;
+import io.cucumber.java.en.Then;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -137,12 +138,17 @@ public class HomePage implements BurgerMenu{
     @Override
     public void viewBurgerMenu(){
         burgerMenuButton.click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.TIMEOUT));
+        wait.until(ExpectedConditions.elementToBeClickable(allItemsLink));
+        wait.until(ExpectedConditions.elementToBeClickable(aboutLink));
+        wait.until(ExpectedConditions.elementToBeClickable(logoutLink));
+        wait.until(ExpectedConditions.elementToBeClickable(resetLink));
     }
 
     @Override
     public void clickAllItemsLink() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.TIMEOUT));
-        wait.until(ExpectedConditions.elementToBeClickable(cartButton));
+        wait.until(ExpectedConditions.elementToBeClickable(allItemsLink));
         allItemsLink.click();
     }
 
@@ -158,6 +164,11 @@ public class HomePage implements BurgerMenu{
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.TIMEOUT));
         wait.until(ExpectedConditions.elementToBeClickable(cartButton));
         logoutLink.click();
+    }
+
+    public List<WebElement> itemIsAvailable(){
+        List<WebElement> addButtons = driver.findElements(By.cssSelector(".btn btn_primary btn_small btn_inventory"));
+        return addButtons;
     }
 
     @Override
