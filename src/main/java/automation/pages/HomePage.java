@@ -166,15 +166,21 @@ public class HomePage implements BurgerMenu{
         logoutLink.click();
     }
 
-    public List<WebElement> itemIsAvailable(){
-        List<WebElement> addButtons = driver.findElements(By.cssSelector(".btn btn_primary btn_small btn_inventory"));
-        return addButtons;
+    public List<String> itemIsAvailable(){
+        List<String> addButtonsText = driver.findElements(By.cssSelector("btn.btn_primary.btn_small.btn_inventory"))
+                .stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        addButtonsText.forEach(System.out::println);
+
+        return addButtonsText;
     }
 
     @Override
     public void resetAppState() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.TIMEOUT));
-        wait.until(ExpectedConditions.elementToBeClickable(cartButton));
+        wait.until(ExpectedConditions.elementToBeClickable(resetLink));
         resetLink.click();
     }
 

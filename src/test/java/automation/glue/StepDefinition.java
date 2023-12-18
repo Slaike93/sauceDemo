@@ -275,9 +275,10 @@ public class StepDefinition {
 
     @Then("Every product should show {string}")
     public void Every_product_should_show(String expectedButtonText){
-        List<WebElement> addButton = driver.findElements(By.className(".btn btn_primary btn_small btn_inventory"));
-        for(WebElement button : addButton){
-            assertEquals("The items are not resetted",expectedButtonText, button.getText());
+        List<WebElement> addToCartButtons = driver.findElements(By.cssSelector(".btn.btn_primary.btn_small.btn_inventory"));
+
+        for (WebElement button : addToCartButtons) {
+            assertEquals("Not resetted", expectedButtonText, button.getText().trim());
         }
     }
 //---------------------------------------------------------------------
