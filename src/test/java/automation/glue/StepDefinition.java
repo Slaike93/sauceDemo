@@ -5,11 +5,8 @@ import automation.drivers.DriverSingleton;
 import automation.pages.*;
 import automation.utils.ConfigurationProperties;
 import automation.utils.Constants;
-import automation.utils.TestCases;
-import automation.utils.Utils;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
-import com.relevantcodes.extentreports.LogStatus;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -22,7 +19,6 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import io.cucumber.spring.CucumberContextConfiguration;
-import automation.config.AutomationFrameworkConfiguration;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,45 +72,26 @@ public class StepDefinition {
         //test.log(LogStatus.PASS, "Navigating to "+Constants.URL);
     }
 
-    //Test login standard user
-    @When("I specify my standard user credential and click Login")
-    public void I_specify_my_standard_user_credential_and_click_login(){
-        loginInPage.logIn(configurationProperties.getStandard_user(), configurationProperties.getPassword());
-        //test.log(LogStatus.PASS, "Specified standard user credential and clicked the sign in button");
+    @When("I specify {string} and {string} as credentials")
+    public void I_specify_username_and_password_as_credentials(String username, String password){
+        loginInPage.logIn(username, password);
     }
 
-    //Test login locked out user
-    @When("I specify my locked out user's credential and click Login")
-    public void I_specify_my_locked_out_users_credential_and_click_Login(){
-        loginInPage.logIn(configurationProperties.getLocked_out_user(), configurationProperties.getPassword());
-//        test.log(LogStatus.PASS, "Specified locked out user credential and clicked the sign in button");
-    }
-
-    //Test with wrong credentials
-    @When("I enter wrong credentials and click login")
-    public void I_enter_wrong_credentials_and_click_login(){
-        loginInPage.logIn(configurationProperties.getWrong_credential(), configurationProperties.getPassword());
-//        test.log(LogStatus.PASS, "Specified wrong credentials and clicked the sign in button");
-    }
-
-    @Then("I am into the home page")
-    public void I_can_log_into_the_home_page(){
-//        if(configurationProperties.getHome_page_title().equals(homePage.getTitle()))
-//            test.log(LogStatus.PASS, "Authentication complete with standard user credentials.");
-//        else
-//            test.log(LogStatus.FAIL, "Authentication with standard user failed");
-        assertEquals(configurationProperties.getHome_page_title(), homePage.getTitle());
-
-    }
-
-    @Then("I see the locked out error message")
-    public void I_see_the_locked_out_error_message(){
-        assertEquals(configurationProperties.getLocked_out_message(), loginInPage.getErrorMessage());
-    }
-
-    @Then("I see the wrong credentials error message")
-    public void I_see_the_wrong_credentials_error_message(){
-        assertEquals(configurationProperties.getWrongCredential_message(), loginInPage.getErrorMessage());
+    @Then("I should see the {string}")
+    public void I_should_see_the(String expectedOutcome){
+        switch (expectedOutcome){
+            case "I see the home page":
+                assertEquals("I am not into the home page", Constants.HOME_PAGE_TITLE, homePage.getTitle());
+                break;
+            case "I see the locked_out_error message":
+                assertEquals(Constants.LOCKED_OUT_MESSAGE, loginInPage.getErrorMessage());
+                break;
+            case "I see the wrong credentials error message":
+                assertEquals(Constants.WRONG_CREDENTIAL_MESSAGE, loginInPage.getErrorMessage());
+                break;
+            default:
+                break;
+        }
     }
 
     //Test add a product to the cart
@@ -137,7 +114,7 @@ public class StepDefinition {
     //Test checkout
     @When("I am in the cart page")
     public void I_am_in_the_cart_page(){
-        homePage.proceedToCheckOut();
+        homePage.clickCartButton();
     }
 
     @And("Click the checkout button and go to the checkout information page")
@@ -163,7 +140,7 @@ public class StepDefinition {
     @And("The cart is empty")
     public void The_cart_is_empty(){
         int itemCount = homePage.getCartItemCount();
-        assertTrue("No items added to the cart", itemCount==0);
+        assertEquals("No items added to the cart", 0, itemCount);
     }
 
     //Test ordinamento prodotti A-Z
@@ -275,19 +252,28 @@ public class StepDefinition {
 
     @Then("Every product should show {string}")
     public void Every_product_should_show(String expectedButtonText){
-        List<WebElement> addToCartButtons = driver.findElements(By.cssSelector(".btn.btn_primary.btn_small.btn_inventory"));
+        List<WebElement> addToCartButtons = driver.findElements(By.cssSelector(".btn_inventory"));
 
         for (WebElement button : addToCartButtons) {
+            System.out.println(button.getText());
             assertEquals("Not resetted", expectedButtonText, button.getText().trim());
         }
+    }
+
+    @And("Cart page is empty")
+    public void Cart_page_is_empty(){
+        List<WebElement> removedCartItems = driver.findElements(By.cssSelector(".removed_cart_items"));
+        assertTrue("There are visible elements on cart page.", !removedCartItems.isEmpty());
     }
 //---------------------------------------------------------------------
 
     //Chiudi l'istanza dopo ogni test
     @After
     public void closeInstance(){
-        //report.endTest(test);
-        //report.flush();
+        /*
+        report.endTest(test);
+        report.flush();
+        */
         DriverSingleton.closeObjectInstance();
     }
 

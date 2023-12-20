@@ -2,8 +2,8 @@ Feature: Sort the products in the home page
 
   Background:
     Given I am in the first page of the website
-    Then I specify my standard user credential and click Login
-    Then I am into the home page
+    Then I specify "standard_user" and "secret_sauce" as credentials
+    Then I should see the "home page"
 
   Scenario: Sorting the products in name ascending order
     When I select ascending sorting by name

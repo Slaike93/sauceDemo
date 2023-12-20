@@ -3,13 +3,13 @@ Feature: Testing the menu functionality from the home page
   #The first page of the website is the login page
   Background:
     Given I am in the first page of the website
-    Then I specify my standard user credential and click Login
-    Then I am into the home page
+    Then I specify "standard_user" and "secret_sauce" as credentials
+    Then I should see the "home page"
     And I click on the menu icon and see the options
 
   Scenario: Going back to the products page
     When I click on All Items option
-    Then I am into the home page
+    Then I should see the "home page"
 
   Scenario: Navigate to the About page
     When I click on About option
@@ -24,8 +24,7 @@ Feature: Testing the menu functionality from the home page
     And The product should be added to the cart
     When I click on Reset App State option
     Then The cart is empty
-    And Every product should show "Add to Cart"
-
+    And Every product should show "Add to cart"
 
 
 

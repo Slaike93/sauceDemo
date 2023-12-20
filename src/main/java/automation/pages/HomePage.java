@@ -1,7 +1,6 @@
 package automation.pages;
 
 import automation.drivers.DriverSingleton;
-import io.cucumber.java.en.Then;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -129,7 +128,7 @@ public class HomePage implements BurgerMenu{
         removeItem.click();
     }
 
-    public void proceedToCheckOut() {
+    public void clickCartButton() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.TIMEOUT));
         wait.until(ExpectedConditions.elementToBeClickable(cartButton));
         cartButton.click();
@@ -164,17 +163,6 @@ public class HomePage implements BurgerMenu{
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.TIMEOUT));
         wait.until(ExpectedConditions.elementToBeClickable(cartButton));
         logoutLink.click();
-    }
-
-    public List<String> itemIsAvailable(){
-        List<String> addButtonsText = driver.findElements(By.cssSelector("btn.btn_primary.btn_small.btn_inventory"))
-                .stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
-
-        addButtonsText.forEach(System.out::println);
-
-        return addButtonsText;
     }
 
     @Override
